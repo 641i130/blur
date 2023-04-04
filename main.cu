@@ -14,7 +14,6 @@ __global__ void applyFilter(const unsigned char *input, unsigned char *output, c
             for(int j = -half; j <= half; j++) {
                 const unsigned int y = max(0, min(height - 1, row + i));
                 const unsigned int x = max(0, min(width - 1, col + j));
-
                 const float w = kernel[(j + half) + (i + half) * kernelWidth];
                 kernelSum += w;
                 blur += w * input[x + y * width];
@@ -59,17 +58,6 @@ int main(int argc, char** argv) {
             kernel[index] = exp(-di) / (2 * M_PI * sigma * sigma);
         }
     }
-
-    // Normalize the kernel so that its weights add up to 1
-    /*
-    float kernelSum = 0.0;
-    for (int i = 0; i < kernelWidth * kernelWidth; i++) {
-        kernelSum += kernel[i];
-    }
-    for (int i = 0; i < kernelWidth * kernelWidth; i++) {
-        kernel[i] /= kernelSum;
-    }*/
-
     // Allocate memory for input and output data on the device
     const unsigned int width = input_image.cols;
     const unsigned int height = input_image.rows;
