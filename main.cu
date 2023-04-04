@@ -26,8 +26,13 @@ __global__ void applyFilter(const unsigned char *input, unsigned char *output, c
 
 int main(int argc, char** argv) {
     if (argc < 3) {
-        std::cerr << "Usage: " << argv[0] << " <input_image_path> <output_image_path>" << std::endl;
+        std::cerr << "Usage: " << argv[0] << " <input_image_path> <output_image_path> [blur]" << std::endl;
         return 1;
+    }
+
+    float blur = 8.0f; // default value
+    if (argc > 3) {
+        blur = std::stof(argv[3]);
     }
     // Load the input image
     cv::Mat input_image = cv::imread(argv[1], cv::IMREAD_GRAYSCALE);
@@ -37,7 +42,7 @@ int main(int argc, char** argv) {
     }
 
     // Set the filter kernel
-   float sigma = 8.0f;
+   float sigma = blur; // Strength of blur
     int kernelWidth = static_cast<int>(3 * sigma);
     if (kernelWidth % 2 == 0) {
         kernelWidth -= 1;  // Make sure kernel width is odd

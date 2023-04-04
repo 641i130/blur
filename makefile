@@ -18,10 +18,11 @@ $(EXEC): $(SRC)
 	$(NVCC) $(CFLAGS) $(SRC) -o $(EXEC)
 
 test: $(EXEC)
+	rm /tmp/*.png
 	scrot /tmp/ss.png
-	./$(EXEC) ss.png ss.png
-	sxiv ss.png
+	./$(EXEC) /tmp/ss.png /tmp/ss.png 16
+	sxiv /tmp/ss.png
 
 clean:
-	rm -f $(EXEC) output_image.jpg
+	rm -f $(EXEC) /tmp/*.png
 
