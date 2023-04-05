@@ -1,5 +1,5 @@
 // A cli tool to apply gaussian blur and output an image
-// Usage: ./tool <input image> <output image>
+// Usage: ./blur <input image> <output image> [blur strength]
 #include <iostream>
 #include <opencv2/opencv.hpp>
 
@@ -25,7 +25,7 @@ __global__ void applyFilter(const unsigned char *input, unsigned char *output, c
 
 int main(int argc, char** argv) {
     if (argc < 3) {
-        std::cerr << "Usage: " << argv[0] << " <input_image_path> <output_image_path> [blur]" << std::endl;
+        std::cerr << "Usage: " << argv[0] << " <input_image_path> <output_image_path> [blur strength]" << std::endl;
         return 1;
     }
 
@@ -85,7 +85,6 @@ int main(int argc, char** argv) {
     // Copy output data from device memory to host memory
     unsigned char* output_data = new unsigned char[output_size];
     cudaMemcpy(output_data, d_output, output_size, cudaMemcpyDeviceToHost);
-
     
     // Create an output image from the processed data and save it to disk
     cv::Mat output_image(height, width, CV_8UC1, output_data);
